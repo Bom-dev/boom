@@ -5,10 +5,7 @@ const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
 const call = document.getElementById("call");
-
-const messageList = document.querySelector("ul");
-const nickForm = document.querySelector("#nick");
-const messageForm = document.querySelector("#message");
+const roomTitle = document.getElementById("roomTitle")
 
 call.hidden = true;
 
@@ -120,11 +117,16 @@ async function handleWelcomeSubmit(event) {
   socket.emit("join_room", input.value);
   roomName = input.value;
   input.value = "";
+  roomTitle.innerText = roomName
 }
 
 welcomeForm.addEventListener("submit", handleWelcomeSubmit);
 
 // Chatting Room
+
+const messageList = document.querySelector("#messageList");
+const nickForm = document.querySelector("#nick");
+const messageForm = document.querySelector("#message");
 
 function makeMessage(type, payload) {
     const msg = { type, payload };

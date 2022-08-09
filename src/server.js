@@ -30,7 +30,7 @@ wsServer.on("connection", (socket) => {
         socket.to(roomName).emit("ice", ice);
     });
     sockets.push(socket);
-    socket["nickname"] = "Anon";
+    socket["nickname"] = "Anonymous";
     socket.on("message", (msg) => {
         const message = JSON.parse(msg);
         switch (message.type) {
