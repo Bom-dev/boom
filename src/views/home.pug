@@ -9,9 +9,10 @@ html(lang="en")
     body
         header
             h1 Boom
+
         main
             div#welcome
-                form    
+                form#welcomeForm    
                     input(placeholder="room name", required, type="text")
                     button Enter room
             div#call
@@ -21,6 +22,13 @@ html(lang="en")
                     button#camera Turn Camera Off
                     select#cameras
                     video#peerFace(autoplay,playsinline, width="400", height="400")
+                    ul
+                form#nick
+                    input(type="text", placeholder="choose a nickname", required)
+                    button Save
+                form#message
+                    input(type="text", placeholder="write a msg", required)
+                    button Send
 
         script(src="/socket.io/socket.io.js") 
         script(src="/public/js/app.js") 

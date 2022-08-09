@@ -6,6 +6,10 @@ const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
 const call = document.getElementById("call");
 
+const messageList = document.querySelector("ul");
+const nickForm = document.querySelector("#nick");
+const messageForm = document.querySelector("#message");
+
 call.hidden = true;
 
 let myStream;
@@ -68,6 +72,7 @@ function handleMuteClick() {
     muted = false;
   }
 }
+
 function handleCameraClick() {
   myStream
     .getVideoTracks()
@@ -99,7 +104,7 @@ camerasSelect.addEventListener("input", handleCameraChange);
 // Welcome Form (join a room)
 
 const welcome = document.getElementById("welcome");
-const welcomeForm = welcome.querySelector("form");
+const welcomeForm = document.getElementById("welcomeForm");
 
 async function initCall() {
   welcome.hidden = true;
@@ -118,6 +123,36 @@ async function handleWelcomeSubmit(event) {
 }
 
 welcomeForm.addEventListener("submit", handleWelcomeSubmit);
+
+// Chatting Room
+
+function makeMessage(type, payload) {
+    const msg = { type, payload };
+    return JSON.stringify(msg);
+}
+
+socket.addEventListener("message", (message) => {
+    const li = document.createElement("li");
+    li.innerText = message;
+    messageList.append(li);
+});
+
+function handleSubmit(event) {
+    event.preventDefault();
+    const input = messageForm.querySelector("input");
+    socket.send(makeMessage("new_message", input.value));
+    input.value = "";
+}
+  
+  function handleNickSubmit(event) {
+    event.preventDefault();
+    const input = nickForm.querySelector("input");
+    socket.send(makeMessage("nickname", input.value));
+    input.value = "";
+}
+  
+messageForm.addEventListener("submit", handleSubmit);
+nickForm.addEventListener("submit", handleNickSubmit);
 
 // Socket Code
 
