@@ -1,13 +1,14 @@
 const socket = io();
-
 const myFace = document.getElementById("myFace");
 const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");
 const camerasSelect = document.getElementById("cameras");
 const call = document.getElementById("call");
+const room = document.getElementById("room");
 const roomTitle = document.getElementById("roomTitle")
 
 call.hidden = true;
+room.hidden = true;
 
 let myStream;
 let muted = false;
@@ -98,34 +99,58 @@ muteBtn.addEventListener("click", handleMuteClick);
 cameraBtn.addEventListener("click", handleCameraClick);
 camerasSelect.addEventListener("input", handleCameraChange);
 
-// Welcome Form (join a room)
+// Room Form (join a room)
 
-const welcome = document.getElementById("welcome");
-const welcomeForm = document.getElementById("welcomeForm");
+const roomForm = document.getElementById("roomForm");
 
 async function initCall() {
-  welcome.hidden = true;
+  room.hidden = true;
   call.hidden = false;
   await getMedia();
   makeConnection();
 }
 
-async function handleWelcomeSubmit(event) {
+async function handleRoomSubmit(event) {
   event.preventDefault();
-  const input = welcomeForm.querySelector("input");
+  const input = roomForm.querySelector("input");
   await initCall();
   socket.emit("join_room", input.value);
   roomName = input.value;
   input.value = "";
-  roomTitle.innerText = roomName
+  roomTitle.innerText = `ROOM ${roomName}`
 }
 
-welcomeForm.addEventListener("submit", handleWelcomeSubmit);
+roomForm.addEventListener("submit", handleRoomSubmit);
 
-// Chatting Room
+// Nickname Form
+
+const welcome = document.querySelector("#welcome");
+const nickForm = document.querySelector("#nick");
+
+nickForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const input = nickForm.querySelector("input");
+  socket.send(makeMessage("nickname", input.value));
+  welcome.hidden = true;
+  room.hidden = false
+});
+
+// Leave
+
+const leaveButton = document.querySelector("#leave");
+
+leaveButton.addEventListener("click", () => {
+  room.hidden = true;
+  welcome.hidden = false;
+  socket.on("ice", (ice) => {
+    console.log("received candidate");
+    myPeerConnection.addIceCandidate(ice);
+  });
+})
+
+// Chatting Message
 
 const messageList = document.querySelector("#messageList");
-const nickForm = document.querySelector("#nick");
 const messageForm = document.querySelector("#message");
 
 function makeMessage(type, payload) {
@@ -139,22 +164,12 @@ socket.addEventListener("message", (message) => {
     messageList.append(li);
 });
 
-function handleSubmit(event) {
-    event.preventDefault();
-    const input = messageForm.querySelector("input");
-    socket.send(makeMessage("new_message", input.value));
-    input.value = "";
-}
-  
-  function handleNickSubmit(event) {
-    event.preventDefault();
-    const input = nickForm.querySelector("input");
-    socket.send(makeMessage("nickname", input.value));
-    input.value = "";
-}
-  
-messageForm.addEventListener("submit", handleSubmit);
-nickForm.addEventListener("submit", handleNickSubmit);
+messageForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const input = messageForm.querySelector("input");
+  socket.send(makeMessage("new_message", input.value));
+  input.value = "";
+});
 
 // Socket Code
 
@@ -222,6 +237,6 @@ function handleIce(data) {
 }
 
 function handleAddStream(data) {
-  const peerFace = document.getElementById("peerFace");
-  peerFace.srcObject = data.stream;
+  const yourFace = document.getElementById("yourFace");
+  yourFace.srcObject = data.stream;
 }

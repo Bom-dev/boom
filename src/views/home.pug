@@ -13,7 +13,11 @@ html(lang="en")
 
         main
             div#welcome
-                form#welcomeForm    
+                form#nick
+                    input(type="text", placeholder="Choose a nickname", required)
+                    button Save
+            div#room
+                form#roomForm    
                     input(placeholder="Room Name", required, type="text")
                     button Enter room
             div#call
@@ -21,12 +25,10 @@ html(lang="en")
                     video#myFace(autoplay,playsinline, width="400", height="400")
                     button#mute Mute
                     button#camera Turn Camera Off
+                    button#leave Leave
                     select#cameras
-                    video#peerFace(autoplay,playsinline, width="400", height="400")
+                    video#yourFace(autoplay,playsinline, width="400", height="400")
                     ul#messageList
-                form#nick
-                    input(type="text", placeholder="Choose a nickname", required)
-                    button Save
                 form#message
                     input(type="text", placeholder="Write a message", required)
                     button Send
