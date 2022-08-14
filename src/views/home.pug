@@ -5,14 +5,14 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Boom
-        link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+        //- link(rel="stylesheet", href="https://unpkg.com/mvp.css")
     body
         header
             h1 Boom
             h2#roomTitle
 
         main
-            div#welcome
+            div#nickname
                 form#nick
                     input(type="text", placeholder="Choose a nickname", required)
                     button Save
@@ -22,7 +22,7 @@ html(lang="en")
                     button Enter room
             div#call
                 div#myStream
-                    video#myFace(autoplay,playsinline, width="400", height="400")
+                    video#myFace(autoplay,playsinline, width="150", height="150")
                     button#mute Mute
                     button#camera Turn Camera Off
                     button#leave Leave

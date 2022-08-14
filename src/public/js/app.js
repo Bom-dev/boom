@@ -11,8 +11,8 @@ call.hidden = true;
 room.hidden = true;
 
 let myStream;
-let muted = false;
-let cameraOff = false;
+let muted 
+let cameraOff
 let roomName;
 let myPeerConnection;
 let myDataChannel;
@@ -106,6 +106,7 @@ const roomForm = document.getElementById("roomForm");
 async function initCall() {
   room.hidden = true;
   call.hidden = false;
+  nickname.hidden = false;
   await getMedia();
   makeConnection();
 }
@@ -124,14 +125,15 @@ roomForm.addEventListener("submit", handleRoomSubmit);
 
 // Nickname Form
 
-const welcome = document.querySelector("#welcome");
+const nickname = document.querySelector("#nickname");
 const nickForm = document.querySelector("#nick");
 
 nickForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const input = nickForm.querySelector("input");
   socket.send(makeMessage("nickname", input.value));
-  welcome.hidden = true;
+  nickForm.querySelector("button").innerText = "Change Nickname"
+  nickname.hidden = true;
   room.hidden = false
 });
 
@@ -143,7 +145,7 @@ leaveButton.addEventListener("click", () => {
   room.hidden = true;
   welcome.hidden = false;
   socket.on("ice", (ice) => {
-    console.log("received candidate");
+    // console.log("received candidate");
     myPeerConnection.addIceCandidate(ice);
   });
 })
@@ -175,36 +177,36 @@ messageForm.addEventListener("submit", (event) => {
 
 socket.on("welcome", async () => {
   myDataChannel = myPeerConnection.createDataChannel("chat");
-  myDataChannel.addEventListener("message", (event) => console.log(event.data));
-  console.log("made data channel");
+  // myDataChannel.addEventListener("message", (event) => console.log(event.data));
+  // console.log("made data channel");
   const offer = await myPeerConnection.createOffer();
   myPeerConnection.setLocalDescription(offer);
-  console.log("sent the offer");
+  // console.log("sent the offer");
   socket.emit("offer", offer, roomName);
 });
 
 socket.on("offer", async (offer) => {
   myPeerConnection.addEventListener("datachannel", (event) => {
     myDataChannel = event.channel;
-    myDataChannel.addEventListener("message", (event) =>
-      console.log(event.data)
-    );
+    // myDataChannel.addEventListener("message", (event) =>
+    //   console.log(event.data)
+    // );
   });
-  console.log("received the offer");
+  // console.log("received the offer");
   myPeerConnection.setRemoteDescription(offer);
   const answer = await myPeerConnection.createAnswer();
   myPeerConnection.setLocalDescription(answer);
   socket.emit("answer", answer, roomName);
-  console.log("sent the answer");
+  // console.log("sent the answer");
 });
 
 socket.on("answer", (answer) => {
-  console.log("received the answer");
+  // console.log("received the answer");
   myPeerConnection.setRemoteDescription(answer);
 });
 
 socket.on("ice", (ice) => {
-  console.log("received candidate");
+  // console.log("received candidate");
   myPeerConnection.addIceCandidate(ice);
 });
 
@@ -232,7 +234,7 @@ function makeConnection() {
 }
 
 function handleIce(data) {
-  console.log("sent candidate");
+  // console.log("sent candidate");
   socket.emit("ice", data.candidate, roomName);
 }
 
