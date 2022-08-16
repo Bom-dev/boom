@@ -1,1 +1,1 @@
-web: node src/public/js/app.js
+web: babel-node src/server.js
