@@ -4,18 +4,20 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        //- link(rel='stylesheet', href='"../../dist/output.css"', type='text/css')
+        style
+            include ../../dist/output.css
         title Boom
-        link(rel="stylesheet" href="./input.css")
-    body
+    body(class="font-mono text-base w-3/4 max-w-screen-sm my-10 mx-auto flex flex-col justify-center")
         header
-            h1 Boom
+            h1(class="text-3xl font-bold underline") Boom
             h2#roomTitle
 
         main
             div#nickname
                 form#nick
                     input(type="text", placeholder="Choose a nickname", required)
-                    button Save
+                    button(class="btn btn-primary") Save
             div#room
                 form#roomForm    
                     input(placeholder="Room Name", required, type="text")
