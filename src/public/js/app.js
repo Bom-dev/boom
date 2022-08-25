@@ -76,10 +76,10 @@ function handleCameraClick() {
     .getVideoTracks()
     .forEach((track) => (track.enabled = !track.enabled));
   if (cameraOff) {
-    cameraBtn.innerText = "Turn Camera Off";
+    cameraBtn.innerText = "Camera Off";
     cameraOff = false;
   } else {
-    cameraBtn.innerText = "Turn Camera On";
+    cameraBtn.innerText = "Camera On";
     cameraOff = true;
   }
 }
@@ -119,6 +119,7 @@ async function handleRoomSubmit(event) {
   roomName = input.value;
   input.value = "";
   roomTitle.innerText = `ROOM ${roomName}`
+  nickname.hidden = true;
 }
 
 roomForm.addEventListener("submit", handleRoomSubmit);
@@ -132,9 +133,8 @@ nickForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const input = nickForm.querySelector("input");
   socket.send(makeMessage("nickname", input.value));
-  nickForm.querySelector("button").innerText = "Change Nickname"
   nickname.hidden = true;
-  room.hidden = false
+  room.hidden = false;
 });
 
 // Leave
@@ -142,12 +142,7 @@ nickForm.addEventListener("submit", (event) => {
 const leaveButton = document.querySelector("#leave");
 
 leaveButton.addEventListener("click", () => {
-  room.hidden = true;
-  welcome.hidden = false;
-  socket.on("ice", (ice) => {
-    // console.log("received candidate");
-    myPeerConnection.addIceCandidate(ice);
-  });
+  window.location.reload()
 })
 
 // Chatting Message
