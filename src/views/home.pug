@@ -4,7 +4,6 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        //- link(rel='stylesheet', href='"../../dist/output.css"', type='text/css')
         style
             include ../../dist/output.css
         title Boom
@@ -17,7 +16,7 @@ html(lang="en")
             div#nickname
                 form#nick
                     input(type="text", placeholder="Choose a nickname", required)
-                    button(class="btn btn-primary") Save
+                    button Save
             div#room
                 form#roomForm    
                     input(placeholder="Room Name", required, type="text")
@@ -25,15 +24,21 @@ html(lang="en")
             div#call
                 div#myStream
                     video#myFace(autoplay,playsinline, width="150", height="150")
-                    button#mute Mute
-                    button#camera Camera Off
-                    button#leave Leave
-                    select#cameras
+                    div(class="flex items-center justify-center")
+                        button#mute Mute
+                        button#camera Camera Off
+                        button#leave Leave
+                        select#cameras
                     video#yourFace(autoplay,playsinline, width="400", height="400")
                     ul#messageList
                 form#message
                     input(type="text", placeholder="Write a message", required)
                     button Send
+
+        footer(class="text-center lg:text-left bg-gray-100 text-gray-600")
+            div(class="flex justify-center items-center lg:justify-between p-6 border-b border-gray-300")
+                span Copyright © 
+                a(href="https://bom-kim.netlify.com" class="underline") Bom Kim
 
         script(src="/socket.io/socket.io.js") 
         script(src="/public/js/app.js") 
