@@ -22,6 +22,7 @@ JavaScript, Node.js (Express, Socket.io), Pug, Tailwind CSS
 - A user can make or join a room
 - A user can communicate with another user using mic, video and chatting
 - A user can mute or unmute their mic & camera
+- A user can choose their camera thorogh options they have
 - A user can leave the room when they want
 
 ### MVP Goals
